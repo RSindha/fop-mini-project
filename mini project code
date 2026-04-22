@@ -1,0 +1,279 @@
+// code of mini project 
+#include <stdio.h>
+#include <math.h>
+
+int main()
+{
+    char name[50];
+    float income, loanAmount;
+    float rate, monthlyRate, emi;
+    float totalPayment, totalInterest;
+    int years, months;
+    int choice;
+    int creditScore;
+
+    printf("BANK EMI LOAN SYSTEM\n");
+
+    // User Details
+    printf("Enter your full name: ");
+    scanf(" %[^\n]", name);
+
+    printf("Enter your monthly income: ");
+    scanf("%f", &income);
+
+    if(income <= 0)
+    {
+        printf("Invalid income!\n");
+        return 0;
+    }
+
+    // Credit Score
+    printf("Enter your credit score (300 - 900): ");
+    scanf("%d", &creditScore);
+
+    if(creditScore < 300 || creditScore > 900)
+    {
+        printf("Invalid credit score!\n");
+        return 0;
+    }
+
+    // Loan Type
+    printf("\nSelect Loan Type:\n");
+    printf("1. Car Loan (Max 7 years)\n");
+    printf("2. Home Loan (Max 30 years)\n");
+    printf("3. Personal Loan (Max 5 years)\n");
+    printf("4. Education Loan (Max 10 years)\n");
+    printf("Enter choice: ");
+    scanf("%d", &choice);
+
+    if(choice < 1 || choice > 4)
+    {
+        printf("Invalid loan type!\n");
+        return 0;
+    }
+
+    // Loan Amount
+    printf("\nEnter loan amount: ");
+    scanf("%f", &loanAmount);
+
+    if(loanAmount <= 0)
+    {
+        printf("Invalid loan amount!\n");
+        return 0;
+    }
+
+    // Duration
+    printf("Enter duration (in years): ");
+    scanf("%d", &years);
+
+    if((choice == 1 && years > 7) ||
+       (choice == 2 && years > 30) ||
+       (choice == 3 && years > 5) ||
+       (choice == 4 && years > 10))
+    {
+        printf("Entered duration exceeds limit for selected loan type!\n");
+        return 0;
+    }
+
+    if(years <= 0)
+    {
+        printf("Invalid duration!\n");
+        return 0;
+    }
+
+    // Base Interest Rate
+    printf("Enter base annual interest rate (in %%): ");
+    scanf("%f", &rate);
+
+    if(rate <= 0)
+    {
+        printf("Invalid interest rate!\n");
+        return 0;
+    }
+
+    // Interest Adjustment Based on Credit Score
+    printf("\nCREDIT SCORE EVALUATION\n");
+
+    if(creditScore < 500)
+    {
+        printf("Sorry, your credit score is very low.\n");
+        printf("Loan cannot be approved due to high financial risk.\n");
+        return 0;
+    }
+    else if(creditScore < 600)
+    {
+        printf("Very risky profile. Interest rate increased by 3%%.\n");
+        rate += 3;
+    }
+    else if(creditScore < 650)
+    {
+        printf("Risky profile. Interest rate increased by 2%%.\n");
+        rate += 2;
+    }
+    else if(creditScore < 700)
+    {
+        printf("Average credit score. Interest rate increased by 1%%.\n");
+        rate += 1;
+    }
+    else if(creditScore < 750)
+    {
+        printf("Good credit score. No change in interest rate.\n");
+    }
+    else if(creditScore < 800)
+    {
+        printf("Very good credit score. Interest rate reduced by 0.5%%.\n");
+        rate -= 0.5;
+    }
+    else
+    {
+        printf("Excellent credit score. Interest rate reduced by 1%%.\n");
+        rate -= 1;
+    }
+
+    // EMI Calculation
+    months = years * 12;
+    monthlyRate = rate / (12 * 100);
+
+    emi = (loanAmount * monthlyRate * pow(1 + monthlyRate, months)) /
+          (pow(1 + monthlyRate, months) - 1);
+
+    totalPayment = emi * months;
+    totalInterest = totalPayment - loanAmount;
+
+    printf("\nLOAN SUMMARY\n");
+    printf("Customer: %s\n", name);
+    printf("Final Interest Rate: %.2f%%\n", rate);
+    printf("Monthly EMI: %.2f\n", emi);
+    printf("Loan Amount: %.2f\n", loanAmount);
+    printf("Total Interest Payable: %.2f\n", totalInterest);
+    printf("Total Amount to be Paid: %.2f\n", totalPayment);
+
+    // Final Approval Based on Repayment Capacity
+    printf("\nAPPROVAL STATUS\n");
+
+    if(emi <= income * 0.50)
+    {
+        printf("Congratulations! Your loan will be approved.\n");
+    }
+    else
+    {
+        printf("Loan Rejected.\n");
+        printf("Reason: EMI exceeds 50%% of your monthly income.\n");
+    }
+
+    printf("\nThank You for using our Bank EMI System!\n");
+
+    return 0;
+}
+
+
+
+
+
+// output 1
+BANK EMI LOAN SYSTEM
+Enter your full name: Arnav Mankawade
+Enter your monthly income: 100000
+Enter your credit score (300 - 900): 800
+
+Select Loan Type:
+1. Car Loan (Max 7 years)
+2. Home Loan (Max 30 years)
+3. Personal Loan (Max 5 years)
+4. Education Loan (Max 10 years)
+Enter choice: 3
+
+Enter loan amount: 700000
+Enter duration (in years): 4
+Enter base annual interest rate (in %): 8
+
+CREDIT SCORE EVALUATION
+Excellent credit score. Interest rate reduced by 1%.
+
+LOAN SUMMARY
+Customer: Arnav Mankawade
+Final Interest Rate: 7.00%
+Monthly EMI: 16762.24
+Loan Amount: 700000.00
+Total Interest Payable: 104587.38
+Total Amount to be Paid: 804587.38
+
+APPROVAL STATUS
+Congratulations! Your loan will be approved.
+
+Thank You for using our Bank EMI System!
+
+
+
+
+  
+// output 2
+  BANK EMI LOAN SYSTEM
+Enter your full name: Pranav Khating
+Enter your monthly income: 50000
+Enter your credit score (300 - 900): 550
+
+Select Loan Type:
+1. Car Loan (Max 7 years)
+2. Home Loan (Max 30 years)
+3. Personal Loan (Max 5 years)
+4. Education Loan (Max 10 years)
+Enter choice: 4
+
+Enter loan amount: 1400000
+Enter duration (in years): 10
+Enter base annual interest rate (in %): 8
+
+CREDIT SCORE EVALUATION
+Very risky profile. Interest rate increased by 3%.
+
+LOAN SUMMARY
+Customer: Pranav Khating
+Final Interest Rate: 11.00%
+Monthly EMI: 19284.94
+Loan Amount: 1400000.00
+Total Interest Payable: 914193.25
+Total Amount to be Paid: 2314193.25
+
+APPROVAL STATUS
+Congratulations! Your loan will be approved.
+
+Thank You for using our Bank EMI System!
+
+
+
+
+
+  // output 3
+  BANK EMI LOAN SYSTEM
+Enter your full name: Noel Ninan
+Enter your monthly income: 20000
+Enter your credit score (300 - 900): 500
+
+Select Loan Type:
+1. Car Loan (Max 7 years)
+2. Home Loan (Max 30 years)
+3. Personal Loan (Max 5 years)
+4. Education Loan (Max 10 years)
+Enter choice: 2
+
+Enter loan amount: 3000000
+Enter duration (in years): 15
+Enter base annual interest rate (in %): 9
+
+CREDIT SCORE EVALUATION
+Very risky profile. Interest rate increased by 3%.
+
+LOAN SUMMARY
+Customer: Noel Ninan
+Final Interest Rate: 12.00%
+Monthly EMI: 36005.05
+Loan Amount: 3000000.00
+Total Interest Payable: 3480910.00
+Total Amount to be Paid: 6480910.00
+
+APPROVAL STATUS
+Loan Rejected.
+Reason: EMI exceeds 50% of your monthly income.
+
+Thank You for using our Bank EMI System!
